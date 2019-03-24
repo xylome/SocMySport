@@ -7,6 +7,7 @@ This script should be run with the version 3 of Python, with these libraries:
 * requests
 * bs4
 * python-twitter
+* lxml
 
 Install them with:
 ```
