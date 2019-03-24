@@ -5,8 +5,8 @@ Python script to add your weekly cycled distance (from strava) to your twitter n
 This script should be run with the version 3 of Python, with these libraries:
 * configparser
 * requests
-* BeautifulSoup
-* twitter
+* bs4
+* python-twitter
 
 Install them with:
 ```
