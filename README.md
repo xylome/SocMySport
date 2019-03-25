@@ -1,5 +1,6 @@
 # SocMySport
 Python script to add your weekly cycled distance (from strava) to your twitter name.
+Now add your yearly cycled distance to your twitter profile.
 
 ## Dependencies
 This script should be run with the version 3 of Python, with these libraries:
@@ -23,8 +24,7 @@ $HOME/.config/SocMySport/config.txt
 ```
 Set the variables to real values.
 
-The *name* variable will be parsed to replace &lt;distance&gt; by your weekly cycled distance.
-
+The *name* variable will be parsed to replace &lt;week_distance&gt; by your weekly cycled distance. The *profile* variable will be parsed to replace &lt;year_distance&gt; by your weekly cycled distance. NB: you can set the *profile* variable to empty string if you don't want to update your profile, but the variable has to be present in the configuration file.
 ## Run
 Execute:
 ```

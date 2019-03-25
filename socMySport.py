@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-__author__ = "Xavier Héroult <xavier@placard.fr.eu.org>"
-__copyright__ = "Copyright 2019, Xavier Héroult"
-__credits__ = ["Xavier Héroult"]
-__license__ = "GPL"
-__version__ = "1.0.0"
+__author__     = "Xavier Héroult <xavier@placard.fr.eu.org>"
+__copyright__  = "Copyright 2019, Xavier Héroult"
+__credits__    = ["Xavier Héroult"]
+__license__    = "GPL"
+__version__    = "1.0.0"
 __maintainer__ = "Xavier Héroult"
-__email__ = "xavier@placard.fr.eu.org"
-__status__ = "Prototype"
+__email__      = "xavier@placard.fr.eu.org"
+__status__     = "Prototype"
 
 import os
 from os.path import expanduser
@@ -52,6 +52,7 @@ except:
 
 try:
     name = config.get('general', 'name')
+    profile = config.get('general', 'profile')
     consumer_key = config.get("twitter", "consumer_key")
     consumer_secret = config.get("twitter", "consumer_secret")
     access_token_key = config.get("twitter", "access_token_key")
@@ -62,7 +63,7 @@ except BaseException as e:
     print("il manque des choses dans la conf, vérifiez.", e)
     exit(4)
 
-login = requests.get('https://www.strava.com/login', headers=headers)
+login = requests.get('https://www.strava.com/login', headers = headers)
 html = login.text
 doc = BeautifulSoup(html, features='lxml')
 
@@ -87,7 +88,7 @@ payload = {
     'remember_me': 'on'
 }
 
-session = requests.post('https://www.strava.com/session', data=payload, headers=headers, cookies=cookies)
+session = requests.post('https://www.strava.com/session', data = payload, headers = headers, cookies = cookies)
 for cookie in session.cookies:
     if cookie.name == strava_cookie_name:
         cookies[strava_cookie_name] = cookie.value
@@ -96,12 +97,28 @@ doc = BeautifulSoup(session.text, features='lxml')
 for element in doc.find('span', attrs={'class':'actual'}):
     distance = element
 
-new_name = name.replace("<distance>", distance)
-print("Will set new name on twitter:", new_name)
+new_name = name.replace("<week_distance>", distance)
+print("Will set name to:", new_name)
+
+if len(profile) > 1:
+    calendar = requests.get('https://www.strava.com/athlete/calendar', headers = headers, cookies = cookies )
+    doc = BeautifulSoup(calendar.text, features='lxml')
+    for element in doc.find('script', attrs={'id' : 'year-stats-template'}):
+        year_stats = element
+
+    year_distance = ""
+    doc = BeautifulSoup(year_stats, features='lxml')
+    for element in doc.find('a', attrs={'data-view-type' : 'distance'}):
+        if element.name == 'strong' or element.name == 'div':
+            year_distance += element.string + ' '
+    profile = profile.replace("<year_distance>", year_distance.strip())
+    print("Will set profile to:", profile)
 
 api = twitter.Api(consumer_key = consumer_key, consumer_secret = consumer_secret,
                     access_token_key = access_token_key, access_token_secret = access_token_secret)
 
-api.UpdateProfile(name=new_name)
-
+if len(year_distance) > 0:
+    api.UpdateProfile(name = new_name, description = profile)
+else:
+    api.UpdateProfile(name = new_name)
 print("Done.")

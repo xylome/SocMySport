@@ -1,5 +1,6 @@
 [general]
-name = Nickname <distance>
+name = Nickname <week_distance> this week.
+profile = I cycled <year_distance> this year.
 
 [twitter]
 consumer_key =
@@ -9,4 +10,4 @@ access_token_secret =
 
 [strava]
 login =
-password = 
+password =
