@@ -24,11 +24,11 @@ $HOME/.config/SocMySport/config.txt
 ```
 Set the variables to real values.
 
-The *name* variable will be parsed to replace &lt;week_distance&gt; by your weekly cycled distance. The *profile* variable will be parsed to replace &lt;year_distance&gt; by your weekly cycled distance. NB: you can set the *profile* variable to empty string if you don't want to update your profile, but the variable has to be present in the configuration file.
+The *name* variable will be parsed to replace &lt;week_distance&gt; by your weekly cycled distance. The *profile* variable will be parsed to replace &lt;year_distance&gt; by your yearly cycled distance. NB: you can set the *profile* variable to empty string if you don't want to update your profile, but the variable has to be present in the configuration file.
 ## Run
 Execute:
 ```
-python3 SocMySport.py
+python3 socMySport.py
 ```
 ## Automate
 Add the above command to your crontab :)
