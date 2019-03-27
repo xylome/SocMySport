@@ -1,6 +1,14 @@
 [general]
 name = Nickname <week_distance> this week.
-profile = I cycled <year_distance> this year.
+profile = <year_distance> 🚴 this year: <CO2> kg CO₂ saved 🌍 🍃 #bikeCommuter
+#profile =
+
+### diesel : 2.6kg / litre
+### essence: 2.3kg / litre
+co2perunit = 2.6
+
+# litres / 100 km
+fuelconsumption = 6.0
 
 [twitter]
 consumer_key =
