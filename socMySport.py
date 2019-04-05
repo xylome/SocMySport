@@ -22,7 +22,7 @@ home = expanduser('~')
 CONF_FILE = home + '/.config/SocMySport/config.txt'
 
 def getCO2(distance, co2perunit, fuelconsumption):
-    distanceFloat = float(distance.replace(',', '.'))
+    distanceFloat = float(distance.replace(',', '.').replace('\xa0', ''))
     fuelconsumptionFloat = float(fuelconsumption)
     co2perunitFloat = float(co2perunit)
     usedFuelFor100 = distanceFloat * fuelconsumptionFloat
