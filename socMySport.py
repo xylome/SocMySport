@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
-__author__     = "Xavier Héroult <xavier@placard.fr.eu.org>"
-__copyright__  = "Copyright 2019, Xavier Héroult"
-__credits__    = ["Xavier Héroult"]
-__license__    = "GPL"
-__version__    = "1.0.0"
+__author__ = "Xavier Héroult <xavier@placard.fr.eu.org>"
+__copyright__ = "Copyright 2019, Xavier Héroult"
+__credits__ = ["Xavier Héroult"]
+__license__ = "GPL"
+__version__ = "1.0.0"
 __maintainer__ = "Xavier Héroult"
-__email__      = "xavier@placard.fr.eu.org"
-__status__     = "Prototype"
+__email__ = "xavier@placard.fr.eu.org"
+__status__ = "Prototype"
 
 import os, sys
 from os.path import expanduser, dirname, join, abspath
+
 sys.path.insert(0, abspath(join(dirname(__file__), 'lib')))
 
 import configparser
@@ -21,6 +22,7 @@ from strava import Strava
 home = expanduser('~')
 CONF_FILE = home + '/.config/SocMySport/config.txt'
 
+
 def getCO2(distance, co2perunit, fuelconsumption):
     distanceFloat = float(distance.replace(',', '.').replace('\xa0', ''))
     fuelconsumptionFloat = float(fuelconsumption)
@@ -29,6 +31,7 @@ def getCO2(distance, co2perunit, fuelconsumption):
     usedFuel = usedFuelFor100 / 100.0
     co2 = usedFuel * co2perunitFloat
     return '{:03.2f}'.format(co2).replace('.', ',')
+
 
 try:
     conf_stat = os.stat(CONF_FILE)
@@ -64,17 +67,17 @@ except BaseException as e:
     exit(4)
 
 strava_user = Strava(strava_login, strava_password)
-twitter_user = twitter.Api(consumer_key = consumer_key, consumer_secret = consumer_secret,
-                    access_token_key = access_token_key, access_token_secret = access_token_secret)
+twitter_user = twitter.Api(consumer_key=consumer_key, consumer_secret=consumer_secret,
+                           access_token_key=access_token_key, access_token_secret=access_token_secret)
 
 new_name = name.replace('<week_distance>', strava_user.getWeekDistance() + ' ' + strava_user.unit)
 print('Will set name to:', new_name)
 
 if len(profile) > 1:
     year_distance = strava_user.getYearDistance()
-    profile = profile.replace('<year_distance>',  year_distance + ' ' + strava_user.unit)
+    profile = profile.replace('<year_distance>', year_distance + ' ' + strava_user.unit)
     profile = profile.replace('<CO2>', getCO2(year_distance, co2perunit, fuelconsumption))
     print('Will set profile to:', profile)
-    twitter_user.UpdateProfile(name = new_name, description = profile)
+    twitter_user.UpdateProfile(name=new_name, description=profile)
 else:
-    twitter_user.UpdateProfile(name = new_name)
+    twitter_user.UpdateProfile(name=new_name)
