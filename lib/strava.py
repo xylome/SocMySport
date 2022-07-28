@@ -70,11 +70,20 @@ class Strava:
         dashboard = requests.get(redirect_url, headers=self.headers, cookies=self.cookies, verify=self.verify)
 
         doc = BeautifulSoup(dashboard.text, features='lxml')
-
         for element in doc.find('span', attrs={'class': 'actual'}):
             elementInfo = element.split()
             self.weekDistance = elementInfo[0]
-            self.unit = elementInfo[1]
+            if len(elementInfo) == 2:
+                self.unit = elementInfo[1]
+            else:
+                # The weekly goal is probably enabled, have to find unit in the next class
+                for element in doc.find('span', attrs={'class': 'goal'}):
+                    elementInfo = element.split()
+                    if len(elementInfo) == 2:
+                        self.unit = elementInfo[1]
+                    else:
+                        print("No information about distance unit, defaulting to km")
+                        self.unit = "km"
 
         self.loggedIn = True
         return True
